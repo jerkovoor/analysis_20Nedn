@@ -238,7 +238,7 @@ public :
    virtual ~analysis_20Nedn() { }
    virtual Int_t   Version() const { return 2; }
    virtual void    Begin(TTree *tree);
-   virtual void    SlaveBegin(TTree *tree);
+   // virtual void    SlaveBegin(TTree *tree);
    virtual void    Init(TTree *tree);
    virtual Bool_t  Notify();
    virtual Bool_t  Process(Long64_t entry);
@@ -247,7 +247,7 @@ public :
    virtual void    SetObject(TObject *obj) { fObject = obj; }
    virtual void    SetInputList(TList *input) { fInput = input; }
    virtual TList  *GetOutputList() const { return fOutput; }
-   virtual void    SlaveTerminate();
+   // virtual void    SlaveTerminate();
    virtual void    Terminate();
 
    ClassDef(analysis_20Nedn,0);
@@ -257,16 +257,17 @@ public :
    long ev;
    long ev_num;
 
-   TFile *psdcut0, *psdcut1, *psdcut2_3, *psdcut4, *psdcut5, *psdcut6_10;
-   TCutG *psd_mod0_cut, *psd_mod1_cut,*psd_mod2_cut, *psd_mod3_cut, *psd_mod4_cut, *psd_mod5_cut, *psd_mod6_cut, *psd_mod7_cut, *psd_mod8_cut, *psd_mod9_cut, *psd_mod10_cut;
+   TFile *psdcut0;
+   TCutG *psdCuts[11];
 
    double lowT,highT,nbTOF;
-   TH1F *modules;
+   TH1D *modules, *tof[11], *tof_psdgated[11];
    TH2D *psd_qdc[11];
    TH2D *tof_qdc[11];
    TH2D *tof_qdc_psdgated[11];
    TH2D *psd_tof[11];
    TH2D *position[11];
+   TH2D *position_psdgated[11];
    TFile *f_out;
 
 };
