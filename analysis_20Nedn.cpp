@@ -43,14 +43,20 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
    NumModules = 11;
    lowT = 20;
    highT = 145;
+
+   lowT_TOFCorrected = lowT-100;
+   highT_TOFCorrected = highT-100;
+
    nbTOF = 125;
    modules = new TH1D("modules","modules",NumModules,0,NumModules);
    for(int i = 0; i < NumModules; i++) {
       tof[i] = new TH1D(Form("tof_%d",i),Form("Time of flight [Module %d]",i),nbTOF,lowT,highT);
+      tof_TOFCorrected[i] = new TH1D(Form("tof_TOFCorrected_%d",i),Form("Time of flight_TOFCorrected [Module %d]",i),nbTOF,lowT_TOFCorrected,highT_TOFCorrected);
       tof_psdgated[i] = new TH1D(Form("tof_psdgated_%d",i),Form("Time of flight [Module %d] gated by PSD",i),nbTOF,lowT,highT);
 
       tof_qdc[i] = new TH2D(Form("tof_qdc_%d",i),Form("Time of flight vs. QDC [Module %d]",i),nbTOF,lowT,highT,300,0,3E5);
       tof_qdc_psdgated[i] = new TH2D(Form("tof_qdc_psdgated_%d",i),Form("Time of flight vs. QDC [Module %d] gated by PSD",i),nbTOF,lowT,highT,300,0,3E5);
+      tof_qdc_TOFCorrected_psdgated[i] = new TH2D(Form("tof_qdc_TOFCorrected_psdgated%d",i),Form("Time of flight vs. QDC_TOFCorrected[Module %d] gated by PSD",i),nbTOF,lowT_TOFCorrected,highT_TOFCorrected,300,0,3E5);
       
       position[i] = new TH2D(Form("position_%d",i),Form("Position Map [Module %d]",i),100,-1.0,1.0,100,-1.0,1.0);
       position_psdgated[i] = new TH2D(Form("position_psdgated_%d",i),Form("Position Map [Module %d] gated by PSD",i),100,-1.0,1.0,100,-1.0,1.0);
@@ -67,6 +73,19 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
    for(int i = 0; i < NumModules; i++) {
       psdCuts[i] = (TCutG*) psdcut0->Get(Form("psd_mod%d",i));
    }
+
+   std::ifstream module_gammaPeak("../TOF_GammaPeaks.txt");
+   assert(module_gammaPeak.is_open());
+   while(module_gammaPeak >> moduleID >> peakPosition) {
+      GammaPeakPosition[moduleID] = peakPosition;
+      // std::cout << moduleID << "\t" << GammaPeakPosition[moduleID] << std::endl;
+   }
+   module_gammaPeak.close();
+
+
+   // ofstream module_gammaPeak;
+   // module_gammaPeak.open (path + "../TOF_GammaPeaks.txt" );
+   // module_gammaPeak << " Module    Peak  \n";
 }
 
 // void analysis_20Nedn::SlaveBegin(TTree * /*tree*/)
@@ -104,6 +123,8 @@ Bool_t analysis_20Nedn::Process(Long64_t entry){
    if(!next_vec__modNum.IsEmpty()){
       modules->Fill(next_vec__modNum[0]);
       tof[next_vec__modNum[0]]->Fill(next_vec__tof[0]);
+      tof_TOFCorrected[next_vec__modNum[0]]->Fill(next_vec__tof[0]-GammaPeakPosition[next_vec__modNum[0]]);
+      // std::cout << next_vec__modNum[0] << "\t" << GammaPeakPosition[next_vec__modNum[0]] << std::endl;
       tof_qdc[next_vec__modNum[0]]->Fill(next_vec__tof[0],next_vec__qdc[0]);
 
       ///////////////////////PSD gated module wise tof-qdc//////////////////////
@@ -111,6 +132,7 @@ Bool_t analysis_20Nedn::Process(Long64_t entry){
       if(psdCuts[next_vec__modNum[0]]->IsInside(next_vec__qdc[0],next_vec__psd[0])){
          tof_psdgated[next_vec__modNum[0]]->Fill(next_vec__tof[0]);
          tof_qdc_psdgated[next_vec__modNum[0]]->Fill(next_vec__tof[0],next_vec__qdc[0]);
+         tof_qdc_TOFCorrected_psdgated[next_vec__modNum[0]]->Fill(next_vec__tof[0]-GammaPeakPosition[next_vec__modNum[0]],next_vec__qdc[0]);
          position_psdgated[next_vec__modNum[0]]->Fill(next_vec__QZpos[0],next_vec__QYpos[0]);
       }      
       
@@ -142,12 +164,14 @@ void analysis_20Nedn::Terminate()
    modules->Write();
    for(int i = 0; i < NumModules; i++) {
       tof[i]->Write();
+      tof_TOFCorrected[i]->Write();
       tof_qdc[i]->Write();
       position[i]->Write();
       psd_qdc[i]->Write();
       psd_tof[i]->Write();
       tof_psdgated[i]->Write();
       tof_qdc_psdgated[i]->Write();
+      tof_qdc_TOFCorrected_psdgated[i]->Write();
       position_psdgated[i]->Write();
    }
 

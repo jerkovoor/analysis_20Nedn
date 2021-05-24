@@ -254,17 +254,22 @@ public :
 
    int NumModules;
 
+   int moduleID;
+   double peakPosition;
+   double GammaPeakPosition[11];
+
    long ev;
    long ev_num;
 
    TFile *psdcut0;
    TCutG *psdCuts[11];
 
-   double lowT,highT,nbTOF;
-   TH1D *modules, *tof[11], *tof_psdgated[11];
+   double lowT,highT,nbTOF,lowT_TOFCorrected,highT_TOFCorrected;
+   TH1D *modules, *tof[11], *tof_TOFCorrected[11], *tof_psdgated[11];
    TH2D *psd_qdc[11];
    TH2D *tof_qdc[11];
    TH2D *tof_qdc_psdgated[11];
+   TH2D *tof_qdc_TOFCorrected_psdgated[11];
    TH2D *psd_tof[11];
    TH2D *position[11];
    TH2D *position_psdgated[11];
