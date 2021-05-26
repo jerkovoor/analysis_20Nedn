@@ -17,9 +17,15 @@ TChain* MakeChain() {
 
     bool extTrigger = 1;
 
+    bool server = 1;//Turn this on to run on the server
+
     TString InPath;
 
-    InPath = "/mnt/c/Users/jerom/Desktop/12Be_exp/NEXT_MSU_REA6/data/";
+    if(server){
+        InPath = "/home/jkovoor/data_20Nedn/root_files/";
+    }else{
+        InPath = "/mnt/c/Users/jerom/Desktop/12Be_exp/NEXT_MSU_REA6/data/";
+    }
 
     chain->Add(InPath+"run_050_DD.root");
 
