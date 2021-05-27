@@ -171,7 +171,7 @@ void analysis_20Nedn::Terminate()
 
    f_out->cd();
 
-   hagridRawEnergy->Write();
+   hagridQDC->Write();
 
    modules->Write();
    for(int i = 0; i < NumModules; i++) {
