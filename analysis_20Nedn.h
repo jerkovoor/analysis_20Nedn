@@ -264,6 +264,8 @@ public :
    TFile *psdcut0;
    TCutG *psdCuts[11];
 
+   TH1D *hagridRawEnergy;
+
    double lowT,highT,nbTOF,lowT_TOFCorrected,highT_TOFCorrected;
    TH1D *modules, *tof[11], *tof_TOFCorrected[11], *tof_psdgated[11];
    TH2D *psd_qdc[11];

@@ -47,6 +47,9 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
    lowT_TOFCorrected = lowT-100;
    highT_TOFCorrected = highT-100;
 
+
+   hagridRawEnergy = new TH1D("hagridRawEnergy","hagridRawEnergy",8000,0,16000)
+
    nbTOF = 125;
    modules = new TH1D("modules","modules",NumModules,0,NumModules);
    for(int i = 0; i < NumModules; i++) {
@@ -123,6 +126,10 @@ Bool_t analysis_20Nedn::Process(Long64_t entry){
    if(ev_num%50000 == 0) std::cout << "Current event = " << ev_num << "\r"<< std::flush;
    ev_num++;
 
+   if(!gammascint_vec__rawEnergy.IsEmpty()){
+      hagridRawEnergy->Fill(gammascint_vec__rawEnergy[0]);
+   }
+
    if(!next_vec__modNum.IsEmpty()){
       modules->Fill(next_vec__modNum[0]);
       tof[next_vec__modNum[0]]->Fill(next_vec__tof[0]);
@@ -163,6 +170,8 @@ void analysis_20Nedn::Terminate()
    // the results graphically or save the results to file.
 
    f_out->cd();
+
+   hagridRawEnergy->Write();
 
    modules->Write();
    for(int i = 0; i < NumModules; i++) {
