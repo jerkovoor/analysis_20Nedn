@@ -14,7 +14,15 @@ using namespace std;
 
 
 void Ne20_histogramReader(){
-    TString path = "/mnt/c/Users/jerom/Desktop/12Be_exp/NEXT_MSU_REA6/build/";
+
+    TString path;
+    bool server = 1;
+    if(server){
+    	path = "/home/jkovoor/analysis_20Nedn/build/";
+    }else{
+    	path = "/mnt/c/Users/jerom/Desktop/12Be_exp/NEXT_MSU_REA6/build/";
+    }
+    
 
     TFile *f = new TFile(path + "histogramsTest.root");
 
