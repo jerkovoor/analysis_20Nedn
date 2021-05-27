@@ -75,10 +75,13 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
    }
 
    std::ifstream module_gammaPeak("../TOF_GammaPeaks.txt");
-   assert(module_gammaPeak.is_open());
-   while(module_gammaPeak >> moduleID >> peakPosition) {
-      GammaPeakPosition[moduleID] = peakPosition;
-      // std::cout << moduleID << "\t" << GammaPeakPosition[moduleID] << std::endl;
+   if(module_gammaPeak.is_open()){
+      while(module_gammaPeak >> moduleID >> peakPosition) {
+         GammaPeakPosition[moduleID] = peakPosition;
+         // std::cout << moduleID << "\t" << GammaPeakPosition[moduleID] << std::endl;
+      }
+   }else{
+      std::cout << "Gamma peaks file not found" << std::endl;
    }
    module_gammaPeak.close();
 
