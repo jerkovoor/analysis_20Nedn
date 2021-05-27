@@ -217,7 +217,7 @@ public :
    // TTreeReaderArray<Bool_t> singlebeta_vec__isLowResBeta = {fReader, "singlebeta_vec_.isLowResBeta"};
    // TTreeReaderArray<Bool_t> singlebeta_vec__isHighResBeta = {fReader, "singlebeta_vec_.isHighResBeta"};
    // TTreeReaderArray<Bool_t> singlebeta_vec__hasTraceFit = {fReader, "singlebeta_vec_.hasTraceFit"};
-   TTreeReaderArray<string> vandle_vec__barType = {fReader, "vandle_vec_.barType"};
+   TTreeReaderArray<TString> vandle_vec__barType = {fReader, "vandle_vec_.barType"};
    TTreeReaderArray<Double_t> vandle_vec__tof = {fReader, "vandle_vec_.tof"};
    TTreeReaderArray<Double_t> vandle_vec__corTof = {fReader, "vandle_vec_.corTof"};
    TTreeReaderArray<Double_t> vandle_vec__qdcPos = {fReader, "vandle_vec_.qdcPos"};
