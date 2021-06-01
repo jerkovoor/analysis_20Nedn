@@ -29,7 +29,7 @@ TChain* MakeChain() {
 
     // chain->Add(InPath+"bkgd_run_6_DD.root");
     // chain->Add(InPath+"bkgd_run_7_DD.root");
-    chain->Add(InPath+"run50_DD.root");
+    chain->Add(InPath+"run16_DD.root");
 
     // if(extTrigger){
     //     for(int run_num=28;run_num<39;run_num++){
