@@ -252,7 +252,7 @@ public :
 
    ClassDef(analysis_20Nedn,0);
 
-   int NumModules;
+   int NumHagrids, NumModules;
 
    int moduleID;
    double peakPosition;
@@ -264,7 +264,7 @@ public :
    TFile *psdcut0;
    TCutG *psdCuts[11];
 
-   TH1D *hagridQDC;
+   TH1D *hagridQDC[2];
 
    double lowT,highT,nbTOF,lowT_TOFCorrected,highT_TOFCorrected;
    TH1D *modules, *tof[11], *tof_TOFCorrected[11], *tof_psdgated[11];

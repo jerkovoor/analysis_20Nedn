@@ -40,6 +40,7 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
    //Defining histograms
    ev_num = 0;
 
+   NumHagrids = 2;
    NumModules = 11;
    lowT = 20;
    highT = 145;
@@ -47,8 +48,10 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
    lowT_TOFCorrected = lowT-100;
    highT_TOFCorrected = highT-100;
 
-
-   hagridQDC = new TH1D("hagridQDC","hagridQDC",4096,0,65536);//2^16
+   for(int i = 0; i < NumHagrids; i++) {
+      hagridQDC[i] = new TH1D(Form("hagridQDC_%d",i),Form("hagridQDC [Module %d]",i),4096,0,65536);//2^16
+   }
+   
 
    nbTOF = 125;
    modules = new TH1D("modules","modules",NumModules,0,NumModules);
@@ -127,7 +130,7 @@ Bool_t analysis_20Nedn::Process(Long64_t entry){
    ev_num++;
 
    if(!gammascint_vec__rawEnergy.IsEmpty()){
-      hagridQDC->Fill(gammascint_vec__qdc[0]);
+      hagridQDC[gammascint_vec__detNum[0]]->Fill(gammascint_vec__qdc[0]);
    }
 
    if(!next_vec__modNum.IsEmpty()){
@@ -171,7 +174,9 @@ void analysis_20Nedn::Terminate()
 
    f_out->cd();
 
-   hagridQDC->Write();
+   for(int i = 0; i < NumModules; i++) {
+      hagridQDC[i]->Write();
+   }
 
    modules->Write();
    for(int i = 0; i < NumModules; i++) {
