@@ -174,7 +174,7 @@ void analysis_20Nedn::Terminate()
 
    f_out->cd();
 
-   for(int i = 0; i < NumModules; i++) {
+   for(int i = 0; i < NumHagrids; i++) {
       hagridQDC[i]->Write();
    }
 
