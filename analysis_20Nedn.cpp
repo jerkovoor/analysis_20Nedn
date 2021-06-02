@@ -48,7 +48,7 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
    highT_TOFCorrected = highT-100;
 
 
-   hagridQDC = new TH1D("hagridQDC","hagridQDC",16384,0,65536);//2^16
+   hagridQDC = new TH1D("hagridQDC","hagridQDC",4096,0,65536);//2^16
 
    nbTOF = 125;
    modules = new TH1D("modules","modules",NumModules,0,NumModules);
