@@ -49,7 +49,7 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
    highT_TOFCorrected = highT-100;
 
    for(int i = 0; i < NumHagrids; i++) {
-      hagridQDC[i] = new TH1D(Form("hagridQDC_%d",i),Form("hagridQDC [Module %d]",i),43750,0,700000);//2^16,4096,0,65536
+      hagridQDC[i] = new TH1D(Form("hagridQDC_%d",i),Form("hagridQDC [Module %d]",i),15625,0,500000);//2^16,4096,0,65536
    }
    
 
