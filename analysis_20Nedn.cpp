@@ -49,7 +49,7 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
    highT_TOFCorrected = highT-100;
 
    for(int i = 0; i < NumHagrids; i++) {
-      hagridQDC[i] = new TH1D(Form("hagridQDC_%d",i),Form("hagridQDC [Module %d]",i),4096,0,65536);//2^16
+      hagridQDC[i] = new TH1D(Form("hagridQDC_%d",i),Form("hagridQDC [Module %d]",i),43750,0,700000);//2^16,4096,0,65536
    }
    
 
@@ -130,7 +130,7 @@ Bool_t analysis_20Nedn::Process(Long64_t entry){
    ev_num++;
 
    if(!gammascint_vec__rawEnergy.IsEmpty()){
-      hagridQDC[gammascint_vec__detNum[0]]->Fill(gammascint_vec__qdc[0]*0.2056);
+      hagridQDC[gammascint_vec__detNum[0]]->Fill(gammascint_vec__qdc[0]);
    }
 
    if(!next_vec__modNum.IsEmpty()){
