@@ -130,7 +130,7 @@ Bool_t analysis_20Nedn::Process(Long64_t entry){
    ev_num++;
 
    if(!gammascint_vec__rawEnergy.IsEmpty()){
-      hagridQDC[gammascint_vec__detNum[0]]->Fill(gammascint_vec__qdc[0]);
+      hagridQDC[gammascint_vec__detNum[0]]->Fill(gammascint_vec__qdc[0]*0.2056);
    }
 
    if(!next_vec__modNum.IsEmpty()){
