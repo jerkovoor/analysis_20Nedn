@@ -267,7 +267,8 @@ public :
    TH1D *hagridQDC[2];
 
    double lowT,highT,nbTOF,lowT_TOFCorrected,highT_TOFCorrected;
-   TH1D *modules, *tof[11], *tof_TOFCorrected[11], *tof_psdgated[11];
+   TH1D *modules, *tof_TOFCorrected_all, *tof[11], *tof_TOFCorrected[11], *tof_psdgated[11];
+   TH2D *tof_qdc_all, *position_all, *position_psdgated_all, *tof_qdc_TOFCorrected_psdgated_all, *psd_qdc_all;
    TH2D *psd_qdc[11];
    TH2D *tof_qdc[11];
    TH2D *tof_qdc_psdgated[11];

@@ -55,6 +55,15 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
 
    nbTOF = 125;
    modules = new TH1D("modules","modules",NumModules,0,NumModules);
+   tof_TOFCorrected_all = new TH1D("tof_TOFCorrected_all","tof_TOFCorrected_all",nbTOF,lowT_TOFCorrected,highT_TOFCorrected);
+   
+   position_psdgated_all = new TH2D("position_psdgated_all","position_psdgated_all",100,-1.0,1.0,100,-1.0,1.0);
+   tof_qdc_all = new TH2D("tof_qdc_all","tof_qdc_all",nbTOF,lowT,highT,300,0,3E5);
+   position_all = new TH2D("position_all","position_all",100,-1.0,1.0,100,-1.0,1.0);
+   psd_qdc_all = new TH2D("psd_qdc_all","psd_qdc_all",300,0,3E5,250,0,1);
+   tof_qdc_TOFCorrected_psdgated_all = new TH2D("tof_qdc_TOFCorrected_psdgated_all","tof_qdc_TOFCorrected_psdgated_all",nbTOF,lowT_TOFCorrected,highT_TOFCorrected,300,0,3E5);
+
+   
    for(int i = 0; i < NumModules; i++) {
       tof[i] = new TH1D(Form("tof_%d",i),Form("Time of flight [Module %d]",i),nbTOF,lowT,highT);
       tof_TOFCorrected[i] = new TH1D(Form("tof_TOFCorrected_%d",i),Form("Time of flight_TOFCorrected [Module %d]",i),nbTOF,lowT_TOFCorrected,highT_TOFCorrected);
@@ -135,6 +144,11 @@ Bool_t analysis_20Nedn::Process(Long64_t entry){
 
    if(!next_vec__modNum.IsEmpty()){
       modules->Fill(next_vec__modNum[0]);
+      tof_qdc_all->Fill(next_vec__tof[0],next_vec__qdc[0]);
+      position_all->Fill(next_vec__QZpos[0],next_vec__QYpos[0]);
+      tof_TOFCorrected_all->Fill(next_vec__tof[0]-GammaPeakPosition[next_vec__modNum[0]]);
+      psd_qdc_all->Fill(next_vec__qdc[0],next_vec__psd[0]);
+
       tof[next_vec__modNum[0]]->Fill(next_vec__tof[0]);
       tof_TOFCorrected[next_vec__modNum[0]]->Fill(next_vec__tof[0]-GammaPeakPosition[next_vec__modNum[0]]);
       // std::cout << next_vec__modNum[0] << "\t" << GammaPeakPosition[next_vec__modNum[0]] << std::endl;
@@ -143,6 +157,9 @@ Bool_t analysis_20Nedn::Process(Long64_t entry){
       ///////////////////////PSD gated module wise tof-qdc//////////////////////
 
       if(psdCuts[next_vec__modNum[0]]->IsInside(next_vec__qdc[0],next_vec__psd[0])){
+         position_psdgated_all->Fill(next_vec__QZpos[0],next_vec__QYpos[0]);
+         tof_qdc_TOFCorrected_psdgated_all->Fill(next_vec__tof[0]-GammaPeakPosition[next_vec__modNum[0]],next_vec__qdc[0]);
+
          tof_psdgated[next_vec__modNum[0]]->Fill(next_vec__tof[0]);
          tof_qdc_psdgated[next_vec__modNum[0]]->Fill(next_vec__tof[0],next_vec__qdc[0]);
          tof_qdc_TOFCorrected_psdgated[next_vec__modNum[0]]->Fill(next_vec__tof[0]-GammaPeakPosition[next_vec__modNum[0]],next_vec__qdc[0]);
@@ -179,6 +196,15 @@ void analysis_20Nedn::Terminate()
    }
 
    modules->Write();
+
+   tof_qdc_all->Write();
+   position_all->Write();
+   tof_TOFCorrected_all->Write();
+   psd_qdc_all->Write();
+
+   position_psdgated_all->Write();
+   tof_qdc_TOFCorrected_psdgated_all->Write();
+
    for(int i = 0; i < NumModules; i++) {
       tof[i]->Write();
       tof_TOFCorrected[i]->Write();
