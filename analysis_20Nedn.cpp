@@ -156,7 +156,7 @@ Bool_t analysis_20Nedn::Process(Long64_t entry){
 
    if(!gammascint_vec__rawEnergy.IsEmpty()){
       hagridQDC[gammascint_vec__detNum[0]]->Fill(gammascint_vec__qdc[0]);
-      hagridEnergy->Fill(hagridCalibration[gammascint_vec__detNum[0]].first()*gammascint_vec__qdc[0]+hagridCalibration[gammascint_vec__detNum[0]].second());
+      hagridEnergy->Fill(hagridCalibration[gammascint_vec__detNum[0]].first*gammascint_vec__qdc[0]+hagridCalibration[gammascint_vec__detNum[0]].second);
    }
 
    if(!next_vec__modNum.IsEmpty()){
