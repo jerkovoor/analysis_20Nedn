@@ -109,7 +109,7 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
    if(hagridCalParam.is_open()){
       while(hagridCalParam >> moduleID >> gain >> offset) {
          hagridCalibration[moduleID] = std::make_pair(gain, offset);
-         // std::cout << moduleID << "\t" << GammaPeakPosition[moduleID] << std::endl;
+         std::cout << moduleID << "\t" << hagridCalibration[moduleID].first << hagridCalibration[moduleID].second << std::endl;
       }
    }else{
       std::cout << "Calibration file not found" << std::endl;
