@@ -50,7 +50,10 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
 
    for(int i = 0; i < NumHagrids; i++) {
       hagridQDC[i] = new TH1D(Form("hagridQDC_%d",i),Form("hagridQDC [Module %d]",i),4096,0,262144);//2^16,4096,0,65536
+      
    }
+
+   hagridEnergy = new TH1D("hagridEnergy","hagridEnergy",500,0,4000);
    
 
    nbTOF = 125;
@@ -100,6 +103,19 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
    }
    module_gammaPeak.close();
 
+   //////////////////Hagrid Calibration////////////////////
+
+   std::ifstream hagridCalParam("../Hagrid_Calibration_Parameters.txt");
+   if(hagridCalParam.is_open()){
+      while(hagridCalParam >> moduleID >> gain >> offset) {
+         hagridCalibration[moduleID] =  = std::make_pair(gain, offset);
+         // std::cout << moduleID << "\t" << GammaPeakPosition[moduleID] << std::endl;
+      }
+   }else{
+      std::cout << "Calibration file not found" << std::endl;
+   }
+   hagridCalParam.close();
+
 
    // ofstream module_gammaPeak;
    // module_gammaPeak.open (path + "../TOF_GammaPeaks.txt" );
@@ -140,6 +156,7 @@ Bool_t analysis_20Nedn::Process(Long64_t entry){
 
    if(!gammascint_vec__rawEnergy.IsEmpty()){
       hagridQDC[gammascint_vec__detNum[0]]->Fill(gammascint_vec__qdc[0]);
+      hagridEnergy->Fill(hagridCalibration[gammascint_vec__detNum[0]].first()*gammascint_vec__qdc[0]+hagridCalibration[gammascint_vec__detNum[0]].second());
    }
 
    if(!next_vec__modNum.IsEmpty()){
@@ -194,6 +211,7 @@ void analysis_20Nedn::Terminate()
    for(int i = 0; i < NumHagrids; i++) {
       hagridQDC[i]->Write();
    }
+   hagridEnergy->Write();
 
    modules->Write();
 

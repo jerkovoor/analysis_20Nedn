@@ -254,9 +254,12 @@ public :
 
    int NumHagrids, NumModules;
 
-   int moduleID;
+   int moduleID, gain, offset;
    double peakPosition;
    double GammaPeakPosition[11];
+
+
+   std::pair<double, double> hagridCalibration[2];// Two modules
 
    long ev;
    long ev_num;
@@ -264,7 +267,8 @@ public :
    TFile *psdcut0;
    TCutG *psdCuts[11];
 
-   TH1D *hagridQDC[2];
+   TH1D *hagridQDC[2], *hagridEnergy;
+   
 
    double lowT,highT,nbTOF,lowT_TOFCorrected,highT_TOFCorrected;
    TH1D *modules, *tof_TOFCorrected_all, *tof[11], *tof_TOFCorrected[11], *tof_psdgated[11];
