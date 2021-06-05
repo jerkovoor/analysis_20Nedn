@@ -254,7 +254,8 @@ public :
 
    int NumHagrids, NumModules;
 
-   int moduleID, gain, offset;
+   int moduleID;
+   double gain, offset;
    double peakPosition;
    double GammaPeakPosition[11];
 

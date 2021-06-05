@@ -109,7 +109,7 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
    if(hagridCalParam.is_open()){
       while(hagridCalParam >> moduleID >> gain >> offset) {
          hagridCalibration[moduleID] = std::make_pair(gain, offset);
-         std::cout << moduleID << "\t" << hagridCalibration[moduleID].first << hagridCalibration[moduleID].second << std::endl;
+         //std::cout << moduleID << "\t" << hagridCalibration[moduleID].first << hagridCalibration[moduleID].second << std::endl;
       }
    }else{
       std::cout << "Calibration file not found" << std::endl;
@@ -156,7 +156,9 @@ Bool_t analysis_20Nedn::Process(Long64_t entry){
 
    if(!gammascint_vec__rawEnergy.IsEmpty()){
       hagridQDC[gammascint_vec__detNum[0]]->Fill(gammascint_vec__qdc[0]);
-      hagridEnergy->Fill(hagridCalibration[gammascint_vec__detNum[0]].first*gammascint_vec__qdc[0]+hagridCalibration[gammascint_vec__detNum[0]].second);
+      double HagEnergy = hagridCalibration[gammascint_vec__detNum[0]].first*gammascint_vec__qdc[0]+hagridCalibration[gammascint_vec__detNum[0]].second;
+      //std::cout << gammascint_vec__detNum[0] << hagridCalibration[gammascint_vec__detNum[0]].first << HagEnergy << std::endl;
+      hagridEnergy->Fill(HagEnergy);
    }
 
    if(!next_vec__modNum.IsEmpty()){
