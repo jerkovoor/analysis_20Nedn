@@ -108,7 +108,7 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
    std::ifstream hagridCalParam("../Hagrid_Calibration_Parameters.txt");
    if(hagridCalParam.is_open()){
       while(hagridCalParam >> moduleID >> gain >> offset) {
-         hagridCalibration[moduleID] =  = std::make_pair(gain, offset);
+         hagridCalibration[moduleID] = std::make_pair(gain, offset);
          // std::cout << moduleID << "\t" << GammaPeakPosition[moduleID] << std::endl;
       }
    }else{
