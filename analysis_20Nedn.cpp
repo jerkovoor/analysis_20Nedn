@@ -50,10 +50,11 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
 
    for(int i = 0; i < NumHagrids; i++) {
       hagridQDC[i] = new TH1D(Form("hagridQDC_%d",i),Form("hagridQDC [Module %d]",i),4096,0,262144);//2^16,4096,0,65536
+      hagridEnergy[i] = new TH1D(Form("hagridEnergy_%d",i),Form("hagridEnergy [Module %d]",i),500,0,4000);
       
    }
 
-   hagridEnergy = new TH1D("hagridEnergy","hagridEnergy",500,0,4000);
+   hagridEnergy_all = new TH1D("hagridEnergy_all","hagridEnergy_all",500,0,4000);
    
 
    nbTOF = 125;
@@ -158,7 +159,8 @@ Bool_t analysis_20Nedn::Process(Long64_t entry){
       hagridQDC[gammascint_vec__detNum[0]]->Fill(gammascint_vec__qdc[0]);
       double HagEnergy = hagridCalibration[gammascint_vec__detNum[0]].first*gammascint_vec__qdc[0]+hagridCalibration[gammascint_vec__detNum[0]].second;
       //std::cout << gammascint_vec__detNum[0] << hagridCalibration[gammascint_vec__detNum[0]].first << HagEnergy << std::endl;
-      hagridEnergy->Fill(HagEnergy);
+      hagridEnergy[gammascint_vec__detNum[0]]->Fill(HagEnergy);
+      hagridEnergy_all->Fill(HagEnergy);
    }
 
    if(!next_vec__modNum.IsEmpty()){
@@ -212,8 +214,9 @@ void analysis_20Nedn::Terminate()
 
    for(int i = 0; i < NumHagrids; i++) {
       hagridQDC[i]->Write();
+      hagridEnergy[i]->Write();
    }
-   hagridEnergy->Write();
+   hagridEnergy_all->Write();
 
    modules->Write();
 

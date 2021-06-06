@@ -15,7 +15,7 @@ int main() {
 TChain* MakeChain() {
     auto *chain = new TChain("PixTree");
 
-    bool extTrigger = 0;
+    bool extTrigger = 1;
 
     bool server = 1;//Turn this on to run on the server
 
@@ -34,12 +34,19 @@ TChain* MakeChain() {
     //chain->Add(InPath+"calib_60co_3_DD.root");//Hagrid 60Co calibration
 
      if(extTrigger){
-         for(int run_num=28;run_num<39;run_num++){
+         for(int run_num=23;run_num<27;run_num++){
+             chain->Add(InPath+Form("run%d_DD.root", run_num));
+         }
+         for(int run_num=28;run_num<48;run_num++){
              chain->Add(InPath+Form("run%d_DD.root", run_num));
          }
         
      }else{
-         for(int run_num=15;run_num<23;run_num++){
+         for(int run_num=1;run_num<23;run_num++){
+             chain->Add(InPath+Form("run%d_DD.root", run_num));
+         }
+         chain->Add(InPath+"run27_DD.root");
+         for(int run_num=48;run_num<56;run_num++){
              chain->Add(InPath+Form("run%d_DD.root", run_num));
          }
      }
