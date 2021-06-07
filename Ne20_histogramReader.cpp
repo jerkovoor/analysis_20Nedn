@@ -24,7 +24,7 @@ void Ne20_histogramReader(){
     }
     
 
-    TFile *f = new TFile(path + "histogramsTest.root");
+    TFile *f = new TFile(path + "histogramsTest_EFT.root");
 
     TF1* fit_func1 = new TF1 ( "fit_func1","[0]*TMath::Exp(-pow((x-[1]),2)/(2*[2]*[2]))",0,120 );
     fit_func1->SetParLimits (2,0.5,2);
