@@ -16,7 +16,7 @@ using namespace std;
 void Ne20_histogramReader(){
 
     TString path;
-    bool server = 1;
+    bool server = 0;
     if(server){
     	path = "/home/jkovoor/analysis_20Nedn/build/";
     }else{

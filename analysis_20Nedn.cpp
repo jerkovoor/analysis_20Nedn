@@ -37,10 +37,16 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
 
    TString option = GetOption();
 
+
+   E_nucleon = 10;
+   mass_n = 939.5;
+   beta = sqrt(2*E_nucleon/mass_n);
+
    //Defining histograms
    ev_num = 0;
 
    NumHagrids = 2;
+   HagridAngles[2] = {0.,90.};
    NumModules = 11;
    lowT = 20;
    highT = 145;
@@ -50,7 +56,8 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
 
    for(int i = 0; i < NumHagrids; i++) {
       hagridQDC[i] = new TH1D(Form("hagridQDC_%d",i),Form("hagridQDC [Module %d]",i),4096,0,262144);//2^16,4096,0,65536
-      hagridEnergy[i] = new TH1D(Form("hagridEnergy_%d",i),Form("hagridEnergy [Module %d]",i),500,0,4000);
+      hagridEnergy[i] = new TH1D(Form("hagridEnergy_%d",i),Form("Hagrid Energy [Module %d]",i),500,0,4000);
+      hagridEnergy_doppler[i] = new TH1D(Form("hagridEnergy_doppler_%d",i),Form("Hagrid Energy Doppler Corrected[Module %d]",i),500,0,4000);
       
    }
 
@@ -159,7 +166,9 @@ Bool_t analysis_20Nedn::Process(Long64_t entry){
       hagridQDC[gammascint_vec__detNum[0]]->Fill(gammascint_vec__qdc[0]);
       double HagEnergy = hagridCalibration[gammascint_vec__detNum[0]].first*gammascint_vec__qdc[0]+hagridCalibration[gammascint_vec__detNum[0]].second;
       //std::cout << gammascint_vec__detNum[0] << hagridCalibration[gammascint_vec__detNum[0]].first << HagEnergy << std::endl;
+      double HagEnergy_doppler = (HagEnergy*(sqrt(1-beta*beta)))/(1-(beta*TMath::Cos(TMath::Pi() / 180. *HagridAngles[gammascint_vec__detNum[0]])));`
       hagridEnergy[gammascint_vec__detNum[0]]->Fill(HagEnergy);
+      hagridEnergy_doppler[gammascint_vec__detNum[0]]->Fill(HagEnergy_doppler);
       hagridEnergy_all->Fill(HagEnergy);
    }
 
@@ -215,6 +224,7 @@ void analysis_20Nedn::Terminate()
    for(int i = 0; i < NumHagrids; i++) {
       hagridQDC[i]->Write();
       hagridEnergy[i]->Write();
+      hagridEnergy_doppler[i]->Write();
    }
    hagridEnergy_all->Write();
 
