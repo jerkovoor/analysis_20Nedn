@@ -15,7 +15,8 @@ int main() {
 TChain* MakeChain() {
     auto *chain = new TChain("PixTree");
 
-    bool extTrigger = 1;
+    bool extTrigger = 0;
+    bool thinTarget = 1;
 
     bool server = 1;//Turn this on to run on the server
 
@@ -32,24 +33,37 @@ TChain* MakeChain() {
     // chain->Add(InPath+"run16_DD.root");
     // chain->Add(InPath+"run50_DD.root");
     //chain->Add(InPath+"calib_60co_3_DD.root");//Hagrid 60Co calibration
+    
+    if(thinTarget){
+    	for(int run_num=19;run_num<54;run_num++){
+             chain->Add(InPath+Form("run%d_DD.root", run_num));
+         }    
+    }else{
+    	for(int run_num=14;run_num<19;run_num++){
+             chain->Add(InPath+Form("run%d_DD.root", run_num));
+         }
+         chain->Add(InPath+"run54_DD.root");
+         chain->Add(InPath+"run55_DD.root");
+    }
+         
 
-     if(extTrigger){
-         for(int run_num=23;run_num<27;run_num++){
-             chain->Add(InPath+Form("run%d_DD.root", run_num));
-         }
-         for(int run_num=28;run_num<48;run_num++){
-             chain->Add(InPath+Form("run%d_DD.root", run_num));
-         }
+     //if(extTrigger){
+     //    for(int run_num=23;run_num<27;run_num++){
+     //        chain->Add(InPath+Form("run%d_DD.root", run_num));
+     //    }
+     //    for(int run_num=28;run_num<48;run_num++){
+     //        chain->Add(InPath+Form("run%d_DD.root", run_num));
+     //    }
         
-     }else{
-         for(int run_num=1;run_num<23;run_num++){
-             chain->Add(InPath+Form("run%d_DD.root", run_num));
-         }
-         chain->Add(InPath+"run27_DD.root");
-         for(int run_num=48;run_num<56;run_num++){
-             chain->Add(InPath+Form("run%d_DD.root", run_num));
-         }
-     }
+     //}else{
+     //    for(int run_num=1;run_num<23;run_num++){
+     //        chain->Add(InPath+Form("run%d_DD.root", run_num));
+     //    }
+     //    chain->Add(InPath+"run27_DD.root");
+     //    for(int run_num=48;run_num<56;run_num++){
+     //        chain->Add(InPath+Form("run%d_DD.root", run_num));
+     //    }
+     //}
     
 
   

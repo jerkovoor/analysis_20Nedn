@@ -252,7 +252,8 @@ public :
 
    ClassDef(analysis_20Nedn,0);
 
-   double E_nucleon, mass_n, beta, HagridAngles[2];
+   double E_nucleon, mass_n, beta;
+   double HagridAngles[2] = {10.,90.};
 
    int NumHagrids, NumModules;
 
@@ -270,7 +271,8 @@ public :
    TFile *psdcut0;
    TCutG *psdCuts[11];
 
-   TH1D *hagridQDC[2], *hagridEnergy_all, *hagridEnergy[2], *hagridEnergy_doppler[2];
+   TH1D *hagridQDC[2], *hagridEnergy_all, *hagridEnergy[2], *hagridEnergy_doppler[2], *hagridTime[2];
+   TH2D *hagridTimeEnergy[2];
    
 
    double lowT,highT,nbTOF,lowT_TOFCorrected,highT_TOFCorrected;
