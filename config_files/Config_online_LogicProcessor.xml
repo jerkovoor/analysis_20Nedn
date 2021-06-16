@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+    <Description>
+        UK Experiment EJ276 Config File (Traces Enabled)
+    </Description>
+
+    <Global>
+        <Revision version="F"/>
+        <!--BitResolution value="12"/-->
+        <EventWidth unit="ns" value="200"/>
+        <!--EnergyContraction value="1.0"/-->
+        <!--Path>config/</Path-->
+        <NumOfTraces value="50"/>
+	<HasRaw value="true"/>
+       <DammPlots value="true"/> 
+    </Global>
+    <DetectorDriver SysRoot="false">
+
+      <!--Analyzer name="TraceExtractor" type="pulser" subtype="start"/-->
+      <Analyzer name="WaveformAnalyzer"/>
+      <!--Analyzer name="WaaAnalyzer"/-->
+      <!-- <Analyzer name="FittingAnalyzer" type="gsl"/> -->
+      <Analyzer name="CfdAnalyzer" type="poly"/>
+      <Processor name="NEXTProcessor"/>
+      <Processor name="LogicProcessor"/>
+    <!-- <Processor name="RootDevProcessor"/>-->
+      <!--Processor name="TwoChanTimingProcessor"/-->
+      <!--Processor name="TtuTimingProcessor"/-->
+      <!--<Processor name="RootProcessor"/>-->
+      <!--Processor name="TACProcessor"-->
+    </DetectorDriver>
+
+    <Map frequency="250" firmware="34688" TraceDelay="240">
+	<Module number="0">
+            <Channel number="0"  type="beta_scint"  subtype="beta" tags="start,left">
+                <Trace RangeLow="5" RangeHigh="10" delay="48"/><Cfd f="0.45" /></Channel>
+
+            <Channel number="1"  type="logic" subtype="ebit" ></Channel>
+
+	    <Channel number="4"  type="next" subtype="dynode" group="0"  tags="right"></Channel>
+            <Channel number="5"  type="next" subtype="dynode" group="0"  tags="left"></Channel>
+            <Channel number="6"  type="next" subtype="dynode" group="1"  tags="right"></Channel>
+            <Channel number="7"  type="next" subtype="dynode" group="1"  tags="left"></Channel>
+            <Channel number="8"  type="next" subtype="dynode" group="2"  tags="right"></Channel>
+            <Channel number="9"  type="next" subtype="dynode" group="2"  tags="left"></Channel>
+            <Channel number="10" type="next" subtype="dynode" group="3"  tags="right"></Channel>
+            <Channel number="11" type="next" subtype="dynode" group="3"  tags="left"></Channel>
+            <Channel number="12" type="next" subtype="dynode" group="4"  tags="right"></Channel>
+            <Channel number="13" type="next" subtype="dynode" group="4"  tags="left"></Channel>
+            <Channel number="14" type="next" subtype="dynode" group="5"  tags="right"></Channel>
+            <Channel number="15" type="next" subtype="dynode" group="5"  tags="left"></Channel>
+          </Module>
+
+	<Module number="1">
+            <Channel number="0"  type="next" subtype="dynode" group="6"  tags="right"></Channel>
+            <Channel number="1"  type="next" subtype="dynode" group="6"  tags="left"></Channel>
+            <Channel number="2"  type="next" subtype="dynode" group="7"  tags="left"></Channel>
+            <Channel number="3"  type="next" subtype="dynode" group="7"  tags="right"></Channel>
+            <Channel number="4"  type="next" subtype="dynode" group="8"  tags="left"></Channel>
+            <Channel number="5"  type="next" subtype="dynode" group="8"  tags="right"></Channel>
+            <Channel number="6"  type="next" subtype="dynode" group="9"  tags="left"></Channel>
+            <Channel number="7"  type="next" subtype="dynode" group="9"  tags="right"></Channel>
+            <Channel number="8"  type="next" subtype="dynode" group="10" tags="left"></Channel>
+            <Channel number="9"  type="next" subtype="dynode" group="10" tags="right"></Channel>
+            
+            <Channel number="12" type="gamma_scint"    subtype="gamma"     tags="start1">
+                <Trace RangeLow="5" RangeHigh="10" delay="240"/><Cfd f="0.45"/> </Channel>
+            <Channel number="14" type="gamma_scint"    subtype="gamma"     tags="start2">
+                <Trace RangeLow="5" RangeHigh="10" delay="240"/><Cfd f="0.45"/> </Channel>
+
+            <Channel number="15" type="ignore"></Channel>
+        </Module>
+        <Module number="2">
+            <Channel number="0"  type="next" subtype="anode"  group="0"  tags="right,FT"></Channel>
+            <Channel number="1"  type="next" subtype="anode"  group="0"  tags="right,FB"></Channel>
+            <Channel number="2"  type="next" subtype="anode"  group="0"  tags="right,BB"></Channel>
+            <Channel number="3"  type="next" subtype="anode"  group="0"  tags="right,BT"></Channel>
+            <Channel number="4"  type="next" subtype="anode"  group="0"  tags="left,BT"></Channel>
+            <Channel number="5"  type="next" subtype="anode"  group="0"  tags="left,BB"></Channel>
+            <Channel number="6"  type="next" subtype="anode"  group="0"  tags="left,FB"></Channel>
+            <Channel number="7"  type="next" subtype="anode"  group="0"  tags="left,FT"></Channel>
+            <Channel number="8"  type="next" subtype="anode"  group="1"  tags="right,FT"></Channel>
+            <Channel number="9"  type="next" subtype="anode"  group="1"  tags="right,FB"></Channel>
+            <Channel number="10" type="next" subtype="anode"  group="1"  tags="right,BB"></Channel>
+            <Channel number="11" type="next" subtype="anode"  group="1"  tags="right,BT"></Channel>
+            <Channel number="12" type="next" subtype="anode"  group="1"  tags="left,BT"></Channel>
+            <Channel number="13" type="next" subtype="anode"  group="1"  tags="left,BB"></Channel>
+            <Channel number="14" type="next" subtype="anode"  group="1"  tags="left,FB"></Channel>
+            <Channel number="15" type="next" subtype="anode"  group="1"  tags="left,FT"></Channel>
+        </Module>
+        <Module number="3" TraceDelay="350">
+            <Channel number="0"  type="next" subtype="anode"  group="2"  tags="right,FB"></Channel>
+            <Channel number="1"  type="next" subtype="anode"  group="2"  tags="right,BB"></Channel>
+            <Channel number="2"  type="next" subtype="anode"  group="2"  tags="right,BT"></Channel>
+            <Channel number="3"  type="next" subtype="anode"  group="2"  tags="right,FT"></Channel>
+            <Channel number="4"  type="next" subtype="anode"  group="2"  tags="left,BB"></Channel>
+            <Channel number="5"  type="next" subtype="anode"  group="2"  tags="left,FB"></Channel>
+            <Channel number="6"  type="next" subtype="anode"  group="2"  tags="left,FT"></Channel>
+            <Channel number="7"  type="next" subtype="anode"  group="2"  tags="left,BT"></Channel>
+            <Channel number="8"  type="next" subtype="anode"  group="3"  tags="right,FB"></Channel>
+            <Channel number="9"  type="next" subtype="anode"  group="3"  tags="right,BB"></Channel>
+            <Channel number="10" type="next" subtype="anode"  group="3"  tags="right,BT"></Channel>
+            <Channel number="11" type="next" subtype="anode"  group="3"  tags="right,FT"></Channel>
+            <Channel number="12" type="next" subtype="anode"  group="3"  tags="left,BB"></Channel>
+            <Channel number="13" type="next" subtype="anode"  group="3"  tags="left,FB"></Channel>
+            <Channel number="14" type="next" subtype="anode"  group="3"  tags="left,FT"></Channel>
+            <Channel number="15" type="next" subtype="anode"  group="3"  tags="left,BT"></Channel>
+        </Module>
+        <Module number="4" TraceDelay="350">
+            <Channel number="0"  type="next" subtype="anode"  group="4"  tags="right,FB"></Channel>
+            <Channel number="1"  type="next" subtype="anode"  group="4"  tags="right,BB"></Channel>
+            <Channel number="2"  type="next" subtype="anode"  group="4"  tags="right,BT"></Channel>
+            <Channel number="3"  type="next" subtype="anode"  group="4"  tags="right,FT"></Channel>
+            <Channel number="4"  type="next" subtype="anode"  group="4"  tags="left,BB"></Channel>
+            <Channel number="5"  type="next" subtype="anode"  group="4"  tags="left,FB"></Channel>
+            <Channel number="6"  type="next" subtype="anode"  group="4"  tags="left,FT"></Channel>
+            <Channel number="7"  type="next" subtype="anode"  group="4"  tags="left,BT"></Channel>
+            <Channel number="8"  type="next" subtype="anode"  group="5"  tags="right,FB"></Channel>
+            <Channel number="9"  type="next" subtype="anode"  group="5"  tags="right,BB"></Channel>
+            <Channel number="10" type="next" subtype="anode"  group="5"  tags="right,BT"></Channel>
+            <Channel number="11" type="next" subtype="anode"  group="5"  tags="right,FT"></Channel>
+            <Channel number="12" type="next" subtype="anode"  group="5"  tags="left,BB"></Channel>
+            <Channel number="13" type="next" subtype="anode"  group="5"  tags="left,FB"></Channel>
+            <Channel number="14" type="next" subtype="anode"  group="5"  tags="left,FT"></Channel>
+            <Channel number="15" type="next" subtype="anode"  group="5"  tags="left,BT"></Channel>
+        </Module>
+        <Module number="5" TraceDelay="350">
+            <Channel number="0"  type="next" subtype="anode"  group="6"  tags="right,FB"></Channel>
+            <Channel number="1"  type="next" subtype="anode"  group="6"  tags="right,BB"></Channel>
+            <Channel number="2"  type="next" subtype="anode"  group="6"  tags="right,BT"></Channel>
+            <Channel number="3"  type="next" subtype="anode"  group="6"  tags="right,FT"></Channel>
+            <Channel number="4"  type="next" subtype="anode"  group="6"  tags="left,BB"></Channel>
+            <Channel number="5"  type="next" subtype="anode"  group="6"  tags="left,FB"></Channel>
+            <Channel number="6"  type="next" subtype="anode"  group="6"  tags="left,FT"></Channel>
+            <Channel number="7"  type="next" subtype="anode"  group="6"  tags="left,BT"></Channel>
+            <Channel number="8"  type="next" subtype="anode"  group="7"  tags="left,BB"></Channel>
+            <Channel number="9"  type="next" subtype="anode"  group="7"  tags="left,FB"></Channel>
+            <Channel number="10" type="next" subtype="anode"  group="7"  tags="left,FT"></Channel>
+            <Channel number="11" type="next" subtype="anode"  group="7"  tags="left,BT"></Channel>
+            <Channel number="12" type="next" subtype="anode"  group="7"  tags="right,FB"></Channel>
+            <Channel number="13" type="next" subtype="anode"  group="7"  tags="right,BB"></Channel>
+            <Channel number="14" type="next" subtype="anode"  group="7"  tags="right,BT"></Channel>
+            <Channel number="15" type="next" subtype="anode"  group="7"  tags="right,FT"></Channel>
+        </Module>
+        <Module number="6">
+            <Channel number="0"  type="next" subtype="anode"  group="8"  tags="left,BB"></Channel>
+            <Channel number="1"  type="next" subtype="anode"  group="8"  tags="left,FB"></Channel>
+            <Channel number="2"  type="next" subtype="anode"  group="8"  tags="left,FT"></Channel>
+            <Channel number="3"  type="next" subtype="anode"  group="8"  tags="left,BT"></Channel>
+            <Channel number="4"  type="next" subtype="anode"  group="8"  tags="right,BT"></Channel>
+            <Channel number="5"  type="next" subtype="anode"  group="8"  tags="right,FT"></Channel>
+            <Channel number="6"  type="next" subtype="anode"  group="8"  tags="right,FB"></Channel>
+            <Channel number="7"  type="next" subtype="anode"  group="8"  tags="right,BB"></Channel>
+            <Channel number="8"  type="next" subtype="anode"  group="9"  tags="left,BB"></Channel>
+            <Channel number="9"  type="next" subtype="anode"  group="9"  tags="left,FB"></Channel>
+            <Channel number="10" type="next" subtype="anode"  group="9"  tags="left,FT"></Channel>
+            <Channel number="11" type="next" subtype="anode"  group="9"  tags="left,BT"></Channel>
+            <Channel number="12" type="next" subtype="anode"  group="9"  tags="right,FB"></Channel>
+            <Channel number="13" type="next" subtype="anode"  group="9"  tags="right,BB"></Channel>
+            <Channel number="14" type="next" subtype="anode"  group="9"  tags="right,BT"></Channel>
+            <Channel number="15" type="next" subtype="anode"  group="9"  tags="right,FT"></Channel>
+        </Module>
+        <Module number="7">
+            <Channel number="0"  type="next" subtype="anode"  group="10"  tags="left,BB"></Channel>
+            <Channel number="1"  type="next" subtype="anode"  group="10"  tags="left,FB"></Channel>
+            <Channel number="2"  type="next" subtype="anode"  group="10"  tags="left,FT"></Channel>
+            <Channel number="3"  type="next" subtype="anode"  group="10"  tags="left,BT"></Channel>
+            <Channel number="4"  type="next" subtype="anode"  group="10"  tags="right,FB"></Channel>
+            <Channel number="5"  type="next" subtype="anode"  group="10"  tags="right,BB"></Channel>
+            <Channel number="6"  type="next" subtype="anode"  group="10"  tags="right,BT"></Channel>
+            <Channel number="7"  type="next" subtype="anode"  group="10"  tags="right,FT"></Channel>
+        </Module>
+        
+    </Map>
+
+    <TimeCalibration verbose_timing="False">
+    </TimeCalibration>
+     
+    <NoteBook file='notes.txt' mode='a'/>
+</Configuration>
