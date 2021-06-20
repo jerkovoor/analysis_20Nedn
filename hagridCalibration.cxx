@@ -43,7 +43,7 @@ void hagridCalibration(){
 
     TF1 *fit_lin = new TF1 ( "fit_lin","[0]*x+[1]",0,100000);
 
-    double Energy[4] = {0,1173.2,1332.5,1450};
+    double Energy[4] = {0,1173.2,1332.5,1436};
 
     for(int i=0;i<NoHagModules;i++){
         gr[i] = new TGraph(4,peaks[i],Energy);

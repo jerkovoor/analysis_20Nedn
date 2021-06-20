@@ -271,7 +271,7 @@ public :
    TFile *psdcut0;
    TCutG *psdCuts[11];
 
-   TH1D *hagridQDC[2], *hagridEnergy_all, *hagridEnergy[2], *hagridEnergy_doppler[2], *hagridTime[2];
+   TH1D *hagridQDC[2], *hagridEnergy_all, *hagridEnergy[2], *hagridEnergy_timeCut[2], *hagridEnergy_doppler[2], *hagridTime[2];
    TH2D *hagridTimeEnergy[2];
    
 

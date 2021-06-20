@@ -57,6 +57,7 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
    for(int i = 0; i < NumHagrids; i++) {
       hagridQDC[i] = new TH1D(Form("hagridQDC_%d",i),Form("hagridQDC [Module %d]",i),4096,0,262144);//2^16,4096,0,65536
       hagridEnergy[i] = new TH1D(Form("hagridEnergy_%d",i),Form("Hagrid Energy [Module %d]",i),500,0,4000);
+      hagridEnergy_timeCut[i] = new TH1D(Form("hagridEnergy_timeCut_%d",i),Form("Hagrid Energy with Time Cut [Module %d]",i),500,0,4000);
       hagridEnergy_doppler[i] = new TH1D(Form("hagridEnergy_doppler_%d",i),Form("Hagrid Energy Doppler Corrected[Module %d]",i),500,0,4000);
       hagridTime[i] = new TH1D(Form("hagridTime_%d",i),Form("Hagrid Time Stamp [Module %d]",i),3000,55E12,58E12);
       hagridTimeEnergy[i] = new TH2D(Form("hagridTimeEnergy_%d",i),Form("Hagrid Time Stamp vs Energy [Module %d]",i),3000,55E12,58E12,500,0,4000);
@@ -165,11 +166,17 @@ Bool_t analysis_20Nedn::Process(Long64_t entry){
    ev_num++;
 
    if(!gammascint_vec__rawEnergy.IsEmpty()){
+
+
       hagridQDC[gammascint_vec__detNum[0]]->Fill(gammascint_vec__qdc[0]);
       double HagEnergy = hagridCalibration[gammascint_vec__detNum[0]].first*gammascint_vec__qdc[0]+hagridCalibration[gammascint_vec__detNum[0]].second;
       //std::cout << gammascint_vec__detNum[0] << hagridCalibration[gammascint_vec__detNum[0]].first << HagEnergy << std::endl;
       double HagEnergy_doppler = (HagEnergy*(1-(beta*TMath::Cos(TMath::Pi() / 180. *HagridAngles[gammascint_vec__detNum[0]]))))/(sqrt(1-beta*beta));
       
+      if(!logic_vec__lastSuperCycleTime.IsEmpty() && (logic_vec__lastSuperCycleTime[0]-gammascint_vec__time[0])<30E6){//30 ms in ns units from EBIT time signature
+         hagridEnergy_timeCut[gammascint_vec__detNum[0]]->Fill(HagEnergy);
+      }
+
       hagridEnergy[gammascint_vec__detNum[0]]->Fill(HagEnergy);
       hagridEnergy_doppler[gammascint_vec__detNum[0]]->Fill(HagEnergy_doppler);
       
@@ -231,6 +238,7 @@ void analysis_20Nedn::Terminate()
    for(int i = 0; i < NumHagrids; i++) {
       hagridQDC[i]->Write();
       hagridEnergy[i]->Write();
+      hagridEnergy_timeCut[i]->Write();
       hagridEnergy_doppler[i]->Write();
       hagridTime[i]->Write();
       hagridTimeEnergy[i]->Write();

@@ -52,7 +52,7 @@ TChain* MakeChain() {
             chain->Add(InPath+"run52_DD.root");
             chain->Add(InPath+"run53_DD.root");
         }else{//////////////////Thick target///////////////////
-            for(int run_num=14;run_num<19;run_num++){
+            for(int run_num=4;run_num<19;run_num++){
                 chain->Add(InPath+Form("run%d_DD.root", run_num));
             }
             chain->Add(InPath+"run54_DD.root");
