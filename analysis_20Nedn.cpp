@@ -54,13 +54,16 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
    lowT_TOFCorrected = lowT-100;
    highT_TOFCorrected = highT-100;
 
+   EBIT_Time = new TH1D("EBIT_Time","EBIT_Time",6E6,0,60E12);
+
    for(int i = 0; i < NumHagrids; i++) {
       hagridQDC[i] = new TH1D(Form("hagridQDC_%d",i),Form("hagridQDC [Module %d]",i),4096,0,262144);//2^16,4096,0,65536
       hagridEnergy[i] = new TH1D(Form("hagridEnergy_%d",i),Form("Hagrid Energy [Module %d]",i),500,0,4000);
       hagridEnergy_timeCut[i] = new TH1D(Form("hagridEnergy_timeCut_%d",i),Form("Hagrid Energy with Time Cut [Module %d]",i),500,0,4000);
+      hagridEnergy_bg[i] = new TH1D(Form("hagridEnergy_bg_%d",i),Form("Hagrid Energy with anti Time Cut (Background) [Module %d]",i),500,0,4000);
       hagridEnergy_doppler[i] = new TH1D(Form("hagridEnergy_doppler_%d",i),Form("Hagrid Energy Doppler Corrected[Module %d]",i),500,0,4000);
-      hagridTime[i] = new TH1D(Form("hagridTime_%d",i),Form("Hagrid Time Stamp [Module %d]",i),3000,55E12,58E12);
-      hagridTimeEnergy[i] = new TH2D(Form("hagridTimeEnergy_%d",i),Form("Hagrid Time Stamp vs Energy [Module %d]",i),3000,55E12,58E12,500,0,4000);
+      hagrid_EBIT_Time[i] = new TH1D(Form("hagrid_EBIT_Time_%d",i),Form("Hagrid - EBIT Time Stamp [Module %d]",i),10000,0,1E9);
+      hagrid_EBIT_TimeEnergy[i] = new TH2D(Form("hagrid_EBIT_TimeEnergy_%d",i),Form("Hagrid -EBIT Time Stamp vs Energy [Module %d]",i),10000,0,1E9,1000,0,10000);
       
    }
 
@@ -82,8 +85,11 @@ void analysis_20Nedn::Begin(TTree * /*tree*/)
       tof[i] = new TH1D(Form("tof_%d",i),Form("Time of flight [Module %d]",i),nbTOF,lowT,highT);
       tof_TOFCorrected[i] = new TH1D(Form("tof_TOFCorrected_%d",i),Form("Time of flight_TOFCorrected [Module %d]",i),nbTOF,lowT_TOFCorrected,highT_TOFCorrected);
       tof_psdgated[i] = new TH1D(Form("tof_psdgated_%d",i),Form("Time of flight [Module %d] gated by PSD",i),nbTOF,lowT,highT);
+      NEXT_EBIT_Time[i] = new TH1D(Form("NEXT_EBIT_Time_%d",i),Form("NEXT - EBIT Time Stamp [Module %d]",i),10000,0,1E9);
 
+      NEXT_EBIT_TimeQDC[i] = new TH2D(Form("NEXT_EBIT_TimeQDC_%d",i),Form("NEXT -EBIT Time Stamp vs QDC [Module %d]",i),10000,0,1E9,300,0,3E5);
       tof_qdc[i] = new TH2D(Form("tof_qdc_%d",i),Form("Time of flight vs. QDC [Module %d]",i),nbTOF,lowT,highT,300,0,3E5);
+      tof_qdc_hagridGated[i] = new TH2D(Form("tof_qdc_hagridGated_%d",i),Form("Time of flight vs. QDC gated by Hagrid[Module %d]",i),nbTOF,lowT,highT,300,0,3E5);
       tof_qdc_psdgated[i] = new TH2D(Form("tof_qdc_psdgated_%d",i),Form("Time of flight vs. QDC [Module %d] gated by PSD",i),nbTOF,lowT,highT,300,0,3E5);
       tof_qdc_TOFCorrected_psdgated[i] = new TH2D(Form("tof_qdc_TOFCorrected_psdgated%d",i),Form("Time of flight vs. QDC_TOFCorrected[Module %d] gated by PSD",i),nbTOF,lowT_TOFCorrected,highT_TOFCorrected,300,0,3E5);
       
@@ -173,15 +179,38 @@ Bool_t analysis_20Nedn::Process(Long64_t entry){
       //std::cout << gammascint_vec__detNum[0] << hagridCalibration[gammascint_vec__detNum[0]].first << HagEnergy << std::endl;
       double HagEnergy_doppler = (HagEnergy*(1-(beta*TMath::Cos(TMath::Pi() / 180. *HagridAngles[gammascint_vec__detNum[0]]))))/(sqrt(1-beta*beta));
       
-      if(!logic_vec__lastSuperCycleTime.IsEmpty() && (logic_vec__lastSuperCycleTime[0]-gammascint_vec__time[0])<30E6){//30 ms in ns units from EBIT time signature
+      if(!logic_vec__lastProtonPulseTime.IsEmpty() && (gammascint_vec__time[0]-logic_vec__lastProtonPulseTime[0])>5E6 && (gammascint_vec__time[0]-logic_vec__lastProtonPulseTime[0])<12.5E6){//30 ms in ns units from EBIT time signature
+         // std::cout << logic_vec__lastProtonPulseTime[0] << "\t" << gammascint_vec__time[0] << "\t" << gammascint_vec__time[0]-logic_vec__lastProtonPulseTime[0] << std::endl;
          hagridEnergy_timeCut[gammascint_vec__detNum[0]]->Fill(HagEnergy);
+         EBIT_Time->Fill(logic_vec__lastProtonPulseTime[0]);
+      }else{
+         hagridEnergy_bg[gammascint_vec__detNum[0]]->Fill(HagEnergy);
       }
+
+      if(gammascint_vec__detNum[0]==0){//Module 0
+         if((HagEnergy>360 && HagEnergy<420) || (HagEnergy>2750 && HagEnergy<2950)){
+            if(!next_vec__modNum.IsEmpty()){
+               tof_qdc_hagridGated[next_vec__modNum[0]]->Fill(next_vec__tof[0],next_vec__qdc[0]);
+            } 
+         }
+      }
+
+      if(gammascint_vec__detNum[0]==1){//Module 0
+         if((HagEnergy>340 && HagEnergy<386) || (HagEnergy>2500 && HagEnergy<2650)){
+            if(!next_vec__modNum.IsEmpty()){
+               tof_qdc_hagridGated[next_vec__modNum[0]]->Fill(next_vec__tof[0],next_vec__qdc[0]); 
+            }
+         }
+      }
+      
+      
+      
 
       hagridEnergy[gammascint_vec__detNum[0]]->Fill(HagEnergy);
       hagridEnergy_doppler[gammascint_vec__detNum[0]]->Fill(HagEnergy_doppler);
       
-      hagridTime[gammascint_vec__detNum[0]]->Fill(gammascint_vec__time[0]);
-      hagridTimeEnergy[gammascint_vec__detNum[0]]->Fill(gammascint_vec__time[0],HagEnergy);
+      hagrid_EBIT_Time[gammascint_vec__detNum[0]]->Fill(gammascint_vec__time[0]-logic_vec__lastProtonPulseTime[0]);
+      hagrid_EBIT_TimeEnergy[gammascint_vec__detNum[0]]->Fill(gammascint_vec__time[0]-logic_vec__lastProtonPulseTime[0],HagEnergy);
       
       hagridEnergy_all->Fill(HagEnergy);
    }
@@ -208,7 +237,10 @@ Bool_t analysis_20Nedn::Process(Long64_t entry){
          tof_qdc_psdgated[next_vec__modNum[0]]->Fill(next_vec__tof[0],next_vec__qdc[0]);
          tof_qdc_TOFCorrected_psdgated[next_vec__modNum[0]]->Fill(next_vec__tof[0]-GammaPeakPosition[next_vec__modNum[0]],next_vec__qdc[0]);
          position_psdgated[next_vec__modNum[0]]->Fill(next_vec__QZpos[0],next_vec__QYpos[0]);
-      }      
+      }
+
+      NEXT_EBIT_Time[next_vec__modNum[0]]->Fill(next_vec__sTime[0]-logic_vec__lastProtonPulseTime[0]);
+      NEXT_EBIT_TimeQDC[next_vec__modNum[0]]->Fill(next_vec__sTime[0]-logic_vec__lastProtonPulseTime[0],next_vec__qdc[0]);      
       
       position[next_vec__modNum[0]]->Fill(next_vec__QZpos[0],next_vec__QYpos[0]);
       psd_qdc[next_vec__modNum[0]]->Fill(next_vec__qdc[0],next_vec__psd[0]);
@@ -235,13 +267,16 @@ void analysis_20Nedn::Terminate()
 
    f_out->cd();
 
+   EBIT_Time->Write();
+
    for(int i = 0; i < NumHagrids; i++) {
       hagridQDC[i]->Write();
       hagridEnergy[i]->Write();
       hagridEnergy_timeCut[i]->Write();
+      hagridEnergy_bg[i]->Write();
       hagridEnergy_doppler[i]->Write();
-      hagridTime[i]->Write();
-      hagridTimeEnergy[i]->Write();
+      hagrid_EBIT_Time[i]->Write();
+      hagrid_EBIT_TimeEnergy[i]->Write();
    }
    hagridEnergy_all->Write();
 
@@ -259,6 +294,7 @@ void analysis_20Nedn::Terminate()
       tof[i]->Write();
       tof_TOFCorrected[i]->Write();
       tof_qdc[i]->Write();
+      tof_qdc_hagridGated[i]->Write();
       position[i]->Write();
       psd_qdc[i]->Write();
       psd_tof[i]->Write();
@@ -266,6 +302,8 @@ void analysis_20Nedn::Terminate()
       tof_qdc_psdgated[i]->Write();
       tof_qdc_TOFCorrected_psdgated[i]->Write();
       position_psdgated[i]->Write();
+      NEXT_EBIT_Time[i]->Write();
+      NEXT_EBIT_TimeQDC[i]->Write();
    }
 
    f_out->Close();

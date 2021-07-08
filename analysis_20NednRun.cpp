@@ -16,8 +16,8 @@ TChain* MakeChain() {
     auto *chain = new TChain("PixTree");
 
     // bool extTrigger = 0;
-    bool thinTarget = 0;
-    bool background = 1;
+    bool thinTarget = 1;
+    bool background = 0;
     bool collimator = 0;
 
     bool server = 1;//Turn this on to run on the server

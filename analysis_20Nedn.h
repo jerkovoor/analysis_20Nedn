@@ -75,16 +75,16 @@ public :
    TTreeReaderArray<Double_t> gammascint_vec__time = {fReader, "gammascint_vec_.time"};
    TTreeReaderArray<TString> gammascint_vec__group = {fReader, "gammascint_vec_.group"};
    TTreeReaderArray<TString> gammascint_vec__subtype = {fReader, "gammascint_vec_.subtype"};
-   // TTreeReaderArray<Bool_t> logic_vec__tapeCycleStatus = {fReader, "logic_vec_.tapeCycleStatus"};
-   // TTreeReaderArray<Bool_t> logic_vec__beamStatus = {fReader, "logic_vec_.beamStatus"};
-   // TTreeReaderArray<Bool_t> logic_vec__tapeMoving = {fReader, "logic_vec_.tapeMoving"};
-   // TTreeReaderArray<Double_t> logic_vec__lastTapeCycleStartTime = {fReader, "logic_vec_.lastTapeCycleStartTime"};
-   // TTreeReaderArray<Double_t> logic_vec__lastBeamOnTime = {fReader, "logic_vec_.lastBeamOnTime"};
-   // TTreeReaderArray<Double_t> logic_vec__lastBeamOffTime = {fReader, "logic_vec_.lastBeamOffTime"};
-   // TTreeReaderArray<Double_t> logic_vec__lastTapeMoveStartTime = {fReader, "logic_vec_.lastTapeMoveStartTime"};
-   // TTreeReaderArray<Double_t> logic_vec__lastProtonPulseTime = {fReader, "logic_vec_.lastProtonPulseTime"};
-   // TTreeReaderArray<Double_t> logic_vec__lastSuperCycleTime = {fReader, "logic_vec_.lastSuperCycleTime"};
-   // TTreeReaderArray<Int_t> logic_vec__cycleNum = {fReader, "logic_vec_.cycleNum"};
+   TTreeReaderArray<Bool_t> logic_vec__tapeCycleStatus = {fReader, "logic_vec_.tapeCycleStatus"};
+   TTreeReaderArray<Bool_t> logic_vec__beamStatus = {fReader, "logic_vec_.beamStatus"};
+   TTreeReaderArray<Bool_t> logic_vec__tapeMoving = {fReader, "logic_vec_.tapeMoving"};
+   TTreeReaderArray<Double_t> logic_vec__lastTapeCycleStartTime = {fReader, "logic_vec_.lastTapeCycleStartTime"};
+   TTreeReaderArray<Double_t> logic_vec__lastBeamOnTime = {fReader, "logic_vec_.lastBeamOnTime"};
+   TTreeReaderArray<Double_t> logic_vec__lastBeamOffTime = {fReader, "logic_vec_.lastBeamOffTime"};
+   TTreeReaderArray<Double_t> logic_vec__lastTapeMoveStartTime = {fReader, "logic_vec_.lastTapeMoveStartTime"};
+   TTreeReaderArray<Double_t> logic_vec__lastProtonPulseTime = {fReader, "logic_vec_.lastProtonPulseTime"};
+   TTreeReaderArray<Double_t> logic_vec__lastSuperCycleTime = {fReader, "logic_vec_.lastSuperCycleTime"};
+   TTreeReaderArray<Int_t> logic_vec__cycleNum = {fReader, "logic_vec_.cycleNum"};
    TTreeReaderArray<Double_t> next_vec__tof = {fReader, "next_vec_.tof"};
    TTreeReaderArray<Double_t> next_vec__corTof = {fReader, "next_vec_.corTof"};
    TTreeReaderArray<Double_t> next_vec__qdcPos = {fReader, "next_vec_.qdcPos"};
@@ -271,15 +271,17 @@ public :
    TFile *psdcut0;
    TCutG *psdCuts[11];
 
-   TH1D *hagridQDC[2], *hagridEnergy_all, *hagridEnergy[2], *hagridEnergy_timeCut[2], *hagridEnergy_doppler[2], *hagridTime[2];
-   TH2D *hagridTimeEnergy[2];
+   TH1D *EBIT_Time;
+
+   TH1D *hagridQDC[2], *hagridEnergy_all, *hagridEnergy[2], *hagridEnergy_timeCut[2], *hagridEnergy_bg[2], *hagridEnergy_doppler[2], *hagrid_EBIT_Time[2];
+   TH2D *hagrid_EBIT_TimeEnergy[2];
    
 
    double lowT,highT,nbTOF,lowT_TOFCorrected,highT_TOFCorrected;
-   TH1D *modules, *tof_TOFCorrected_all, *tof[11], *tof_TOFCorrected[11], *tof_psdgated[11];
+   TH1D *modules, *tof_TOFCorrected_all, *tof[11], *tof_TOFCorrected[11], *tof_psdgated[11], *NEXT_EBIT_Time[11];
    TH2D *tof_qdc_all, *position_all, *position_psdgated_all, *tof_qdc_TOFCorrected_psdgated_all, *psd_qdc_all;
-   TH2D *psd_qdc[11];
-   TH2D *tof_qdc[11];
+   TH2D *psd_qdc[11], *NEXT_EBIT_TimeQDC[11];
+   TH2D *tof_qdc[11], *tof_qdc_hagridGated[11];
    TH2D *tof_qdc_psdgated[11];
    TH2D *tof_qdc_TOFCorrected_psdgated[11];
    TH2D *psd_tof[11];
