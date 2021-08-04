@@ -243,6 +243,7 @@ public :
    virtual Bool_t  Notify();
    virtual Bool_t  Process(Long64_t entry);
    virtual Int_t   GetEntry(Long64_t entry, Int_t getall = 0) { return fChain ? fChain->GetTree()->GetEntry(entry, getall) : 0; }
+   virtual Double_t   GetEntries() { return fChain ? fChain->GetTree()->GetEntries() : 0; }
    virtual void    SetOption(const char *option) { fOption = option; }
    virtual void    SetObject(TObject *obj) { fObject = obj; }
    virtual void    SetInputList(TList *input) { fInput = input; }
@@ -266,22 +267,24 @@ public :
    std::pair<double, double> hagridCalibration[2];// Two modules
 
    long ev;
-   long ev_num;
+   double ev_num;
+   double progress;
 
-   TFile *psdcut0;
-   TCutG *psdCuts[11];
+   TFile *psdcut0, *bananaCuts;
+   TCutG *psdCuts[11], *bananaCutLeft, *bananaCutRight;
 
    TH1D *EBIT_Time;
 
    TH1D *hagridQDC[2], *hagridEnergy_all, *hagridEnergy[2], *hagridEnergy_timeCut[2], *hagridEnergy_bg[2], *hagridEnergy_doppler[2], *hagrid_EBIT_Time[2];
+   TH1D *hagrid_CutLeftBanana_timeCut[2], *hagrid_CutRightBanana_timeCut[2];
    TH2D *hagrid_EBIT_TimeEnergy[2];
    
 
    double lowT,highT,nbTOF,lowT_TOFCorrected,highT_TOFCorrected;
    TH1D *modules, *tof_TOFCorrected_all, *tof[11], *tof_TOFCorrected[11], *tof_psdgated[11], *NEXT_EBIT_Time[11];
-   TH2D *tof_qdc_all, *position_all, *position_psdgated_all, *tof_qdc_TOFCorrected_psdgated_all, *psd_qdc_all;
+   TH2D *tof_qdc_all, *position_all, *position_psdgated_all, *tof_qdc_TOFCorrected_psdgated_all, *psd_qdc_all, *eventNo_TOF;
    TH2D *psd_qdc[11], *NEXT_EBIT_TimeQDC[11];
-   TH2D *tof_qdc[11], *tof_qdc_hagridGated[11];
+   TH2D *tof_qdc[11], *tof_qdc_hagridGated[11], *tof_qdc_hagridAndPSDGated[11];
    TH2D *tof_qdc_psdgated[11];
    TH2D *tof_qdc_TOFCorrected_psdgated[11];
    TH2D *psd_tof[11];

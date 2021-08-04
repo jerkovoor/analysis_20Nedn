@@ -34,6 +34,7 @@ TChain* MakeChain() {
     // chain->Add(InPath+"bkgd_run_7_DD.root");
     // chain->Add(InPath+"run16_DD.root");
     // chain->Add(InPath+"run50_DD.root");
+    // chain->Add(InPath+"run_050_DD.root");
     //chain->Add(InPath+"calib_60co_3_DD.root");//Hagrid 60Co calibration
 
     if(background){
@@ -44,13 +45,13 @@ TChain* MakeChain() {
         chain->Add(InPath+"run49_DD.root");
     }else{//////////////Data//////////////
         if(thinTarget){//////////////////Thin target//////////////////////
+            
             for(int run_num=19;run_num<49;run_num++){
                 chain->Add(InPath+Form("run%d_DD.root", run_num));
             }
-            chain->Add(InPath+"run50_DD.root");
-            chain->Add(InPath+"run51_DD.root");
-            chain->Add(InPath+"run52_DD.root");
-            chain->Add(InPath+"run53_DD.root");
+            for(int run_num=50;run_num<54;run_num++){
+                chain->Add(InPath+Form("run%d_DD.root", run_num));
+            }
         }else{//////////////////Thick target///////////////////
             for(int run_num=4;run_num<19;run_num++){
                 chain->Add(InPath+Form("run%d_DD.root", run_num));
